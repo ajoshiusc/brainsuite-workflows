@@ -11,15 +11,24 @@ from os import system
 from os.path import isfile
 from multiprocessing import Pool
 from contextlib import closing
+import ConfigParser
 
-csv_file = '/big_disk/ajoshi/coding_ground/brainsuite-workflows/\
-data/sample_data/sample_T1.csv'
-NPROC = 6
-BST_INSTALL = '/home/ajoshi/BrainSuite16a1'
-SVREG_ATLAS = '/home/ajoshi/BrainSuite16a1/svreg/BrainSuiteAtlas1/mri'
-SVREG_FLAGS = ''
-CSE_EXE = BST_INSTALL + '/bin/cortical_extraction.sh'
-SVREG_EXE = BST_INSTALL + '/svreg/bin/svreg.sh'
+config_file = '/big_disk/ajoshi/coding_ground/\
+brainsuite-workflows/data/sample_data/thickness.cfg'
+
+Config = ConfigParser.ConfigParser()
+Config.read(config_file)
+Config.sections()
+
+csv_file = Config.get('CSESVREG', 'csv_file')
+NPROC = Config.get('CSESVREG', 'NPROC')
+
+BST_INSTALL = Config.get('CSESVREG', 'BST_INSTALL')
+SVREG_ATLAS = Config.get('CSESVREG', 'SVREG_ATLAS')
+SVREG_FLAGS = Config.get('CSESVREG', 'SVREG_FLAGS')
+
+CSE_EXE = Config.get('CSESVREG', 'CSE_EXE')
+SVREG_EXE = Config.get('CSESVREG', 'SVREG_EXE')
 
 
 with open(csv_file, 'rb') as csvfile:
