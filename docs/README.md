@@ -24,3 +24,8 @@ In order to run cortical thickness analysis in BrainSuite please follow followin
 2. Run `process_thickness.sh`script. This will run cortical thickness computation and smoothing on all of the datasets in the study.
 3. BSS [BSS documention here]
  
+# Diffusion workflow
+
+1. Check the **BDP** section in the study.cfg file.
+2. Run `process_dwi.sh`script. This will run cortical thickness computation and smoothing on all of the datasets in the study.
+3. BSS [BSS documention here]
