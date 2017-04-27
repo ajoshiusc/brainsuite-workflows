@@ -21,7 +21,7 @@ Config.read(config_file)
 Config.sections()
 
 csv_file = Config.get('CSESVREG', 'csv_file')
-NPROC = Config.get('CSESVREG', 'NPROC')
+NPROC = int(Config.get('CSESVREG', 'NPROC'))
 
 BST_INSTALL = Config.get('CSESVREG', 'BST_INSTALL')
 SVREG_ATLAS = Config.get('CSESVREG', 'SVREG_ATLAS')
@@ -30,7 +30,7 @@ SVREG_FLAGS = Config.get('CSESVREG', 'SVREG_FLAGS')
 CSE_EXE = Config.get('CSESVREG', 'CSE_EXE')
 SVREG_EXE = Config.get('CSESVREG', 'SVREG_EXE')
 
-
+#csv_file = '/big_disk/ajoshi/coding_ground/brainsuite-workflows/data/sample_data/sample_T1.csv'
 with open(csv_file, 'rb') as csvfile:
     sublist = csv.reader(csvfile)
 
