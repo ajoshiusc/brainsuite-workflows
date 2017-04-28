@@ -13,6 +13,7 @@ from multiprocessing import Pool
 from contextlib import closing
 import ConfigParser
 
+
 config_file = '/big_disk/ajoshi/coding_ground/\
 brainsuite-workflows/data/sample_data/thickness.cfg'
 
@@ -30,26 +31,33 @@ SVREG_FLAGS = Config.get('CSESVREG', 'SVREG_FLAGS')
 CSE_EXE = Config.get('CSESVREG', 'CSE_EXE')
 SVREG_EXE = Config.get('CSESVREG', 'SVREG_EXE')
 
-#csv_file = '/big_disk/ajoshi/coding_ground/brainsuite-workflows/data/sample_data/sample_T1.csv'
 with open(csv_file, 'rb') as csvfile:
     sublist = csv.reader(csvfile)
 
     ind = 0
-    cmdln = []
+    cmdln1 = []
+    cmdln2 = []
     for sub in sublist:
-        img = ''.join(sub)
+        img = ''.join(sub[0])
 
         if not isfile(img):
             continue
 
-        cmdln.append(CSE_EXE + ' ' + img)
-        cmdln.append(SVREG_EXE + ' ' + img[:-7] + ' ' + SVREG_ATLAS + ' ' +
-                     SVREG_FLAGS)
-        print cmdln
+# compose commands for cse and svreg
+        cmdln1.append(CSE_EXE + ' ' + img)
+        cmdln2.append(SVREG_EXE + ' ' + img[:-7] + ' ' + SVREG_ATLAS + ' ' +
+                      SVREG_FLAGS)
+#        print cmdln1, cmdln2
         ind += 1
 
+# Run CSE
     with closing(Pool(NPROC)) as p:
-        p.map(system, cmdln)
+        p.map(system, cmdln1)
+        p.terminate()
+# run SVReg
+    with closing(Pool(NPROC)) as p:
+        p.map(system, cmdln2)
         p.terminate()
 
-    print "Surface extractions done"
+print "Surface extractions done"
+
