@@ -45,7 +45,7 @@ for line in f:
 
     cmdln1.append(BDP_EXE + ' ' + t1[:-7] + '.bfc.nii.gz ' + ' --nii ' + dwi + ' --bvec ' + dwi[:-7] + '.bvec' + ' --bval ' +  dwi[:-7] + '.bval ' +  ' --tensors --frt');
     print cmdln1
-    cmdln2.append(SVREG_MAP_EXE + ' ' + t1[:-7] + '.svreg.inv.map.nii.gz ' + dwi[:-7] + '.RAS.correct.FA.T1_coord.nii.gz ' +  dwi[:-7] + '.atlas.FA.nii.gz ' +  t1[:-7] + '.bfc.nii.gz');
+    cmdln2.append(SVREG_MAP_EXE + ' ' + t1[:-7] + '.svreg.inv.map.nii.gz ' + t1[:-7] + '.dwi.RAS.correct.FA.T1_coord.nii.gz ' +  t1[:-7] + '.atlas.FA.nii.gz ' +  SVREG_ATLAS + '.bfc.nii.gz');
     print cmdln2
 
     ind += 1
