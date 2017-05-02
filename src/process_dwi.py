@@ -30,27 +30,34 @@ SVREG_MAP_EXE = Config.get('BDP', 'SVREG_MAP_EXE')
 csv_file=''.join(csv_file)
 f = open(csv_file, 'rU') #open the file in read universal mode
 ind = 0;
-cmdln = []
+cmdln1 = []
+cmdln2 = []
+
 for line in f:
     cells = line.split( "," )
     t1 = cells[0];
     dwi = cells[1][:-1]
-    
+
     if not isfile(t1):
         continue
     if not isfile(dwi):
         continue
-        
-    cmdln.append(BDP_EXE + ' ' + t1[:-7] + '.bfc.nii.gz ' + ' --nii ' + dwi + ' --bvec ' + dwi[:-7] + '.bvec' + ' --bval ' +  dwi[:-7] + '.bval ' +  ' --tensors --frt');
-    print cmdln
-    cmdln.append(SVREG_MAP_EXE + ' ' + t1[:-7] + '.svreg.inv.map.nii.gz ' + dwi[:-7] + '.RAS.correct.FA.T1_coord.nii.gz ' +  dwi[:-7] + '.atlas.FA.nii.gz ' +  t1[:-7] + '.bfc.nii.gz');
-    print cmdln
+
+    cmdln1.append(BDP_EXE + ' ' + t1[:-7] + '.bfc.nii.gz ' + ' --nii ' + dwi + ' --bvec ' + dwi[:-7] + '.bvec' + ' --bval ' +  dwi[:-7] + '.bval ' +  ' --tensors --frt');
+    print cmdln1
+    cmdln2.append(SVREG_MAP_EXE + ' ' + t1[:-7] + '.svreg.inv.map.nii.gz ' + dwi[:-7] + '.RAS.correct.FA.T1_coord.nii.gz ' +  dwi[:-7] + '.atlas.FA.nii.gz ' +  t1[:-7] + '.bfc.nii.gz');
+    print cmdln2
+
     ind += 1
-    
+
 f.close()
 
 with closing(Pool(NPROC)) as p:
-    p.map(system, cmdln)
+    p.map(system, cmdln1)
+    p.terminate()
+
+with closing(Pool(NPROC)) as p:
+    p.map(system, cmdln2)
     p.terminate()
 
     print "DWI Computations Done"

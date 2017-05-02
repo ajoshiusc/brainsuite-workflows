@@ -11,13 +11,14 @@ from os import system
 from os.path import isfile
 from multiprocessing import Pool
 from contextlib import closing
-import ConfigParser
+import configparser
+#from backports import configparser
 
 
 config_file = '/big_disk/ajoshi/coding_ground/\
 brainsuite-workflows/data/sample_data/thickness.cfg'
 
-Config = ConfigParser.ConfigParser()
+Config = configparser.ConfigParser()
 Config.read(config_file)
 Config.sections()
 
@@ -31,7 +32,7 @@ SVREG_FLAGS = Config.get('CSESVREG', 'SVREG_FLAGS')
 CSE_EXE = Config.get('CSESVREG', 'CSE_EXE')
 SVREG_EXE = Config.get('CSESVREG', 'SVREG_EXE')
 
-with open(csv_file, 'rb') as csvfile:
+with open(csv_file, 'rt') as csvfile:
     sublist = csv.reader(csvfile)
 
     ind = 0
@@ -59,5 +60,5 @@ with open(csv_file, 'rb') as csvfile:
         p.map(system, cmdln2)
         p.terminate()
 
-print "Surface extractions done"
+print("Surface extractions done")
 
