@@ -49,11 +49,11 @@ for sub in sublist:
                   SVREG_FLAGS)
     ind += 1
 
-# Run CSE
-with closing(Pool(NPROC)) as p:
-    print cmdln1
-    p.map(system, cmdln1)
-    p.terminate()
+## Run CSE
+#with closing(Pool(NPROC)) as p:
+#    print cmdln1
+#    p.map(system, cmdln1)
+#    p.terminate()
 # run SVReg
 with closing(Pool(NPROC)) as p:
     p.map(system, cmdln2)

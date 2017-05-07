@@ -6,9 +6,9 @@ Created on Thu Apr 27 12:16:26 2017
 @author: Anand A Joshi, Divya Varadarajan
 """
 
-import csv
+import glob
 from os import system
-from os.path import isfile, split
+from os.path import isfile
 from multiprocessing import Pool
 from contextlib import closing
 import ConfigParser
@@ -20,23 +20,21 @@ Config = ConfigParser.ConfigParser()
 Config.read(config_file)
 Config.sections()
 
-csv_file = Config.get('CSESVREG', 'csv_file')
+STUDY_DIR = Config.get('CSESVREG', 'STUDY_DIR')
 NPROC = int(Config.get('CSESVREG', 'NPROC'))
 BST_INSTALL = Config.get('CSESVREG', 'BST_INSTALL')
 SVREG_ATLAS = Config.get('CSESVREG', 'SVREG_ATLAS')
 
 BDP_EXE = Config.get('BDP', 'BDP_EXE')
 SVREG_MAP_EXE = Config.get('BDP', 'SVREG_MAP_EXE')
-csv_file=''.join(csv_file)
-f = open(csv_file, 'rU') #open the file in read universal mode
-ind = 0;
+sublist = lst = glob.glob(STUDY_DIR+'/*')
+ind = 0
 cmdln1 = []
 cmdln2 = []
 
-for line in f:
-    cells = line.split( "," )
-    t1 = cells[0];
-    dwi = cells[1][:-1]
+for sub in sublist:
+    t1 = sub + '/anat/t1.nii.gz'
+    dwi = sub + '/dwi/dwi.nii.gz'
 
     if not isfile(t1):
         continue
@@ -50,7 +48,6 @@ for line in f:
 
     ind += 1
 
-f.close()
 
 with closing(Pool(NPROC)) as p:
     p.map(system, cmdln1)
