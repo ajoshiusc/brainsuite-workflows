@@ -7,15 +7,10 @@ Created on Thu Apr 27 12:16:26 2017
 """
 
 import glob
-from os import system
 from os.path import isfile
-from multiprocessing import Pool
-from contextlib import closing
 import configparser
-import sys
 
-config_file = sys.argv[1]
-# '/big_disk/ajoshi/ABIDE2/study.cfg'
+config_file = u'/big_disk/ajoshi/ABIDE2/study.cfg'
 
 Config = configparser.ConfigParser()
 Config.read(config_file)
@@ -37,33 +32,14 @@ sublist = lst = glob.glob(STUDY_DIR+'/*')
 ind = 0
 cmdln1 = []
 cmdln2 = []
+incom = 0
+com = 0
 for sub in sublist:
-# Check if the workflow has already been run
     img = sub + '/anat/t1.roiwise.stats.txt'
-    if isfile(img):
-        continue
-
-    img = sub + '/anat/t1.nii.gz'
 #    print img
     if not isfile(img):
+        incom += 1
+        print img
         continue
-
-# Compose commands for CSE and SVReg
-    cmdln1.append(CSE_EXE + ' ' + img)
-    cmdln2.append(SVREG_EXE + ' ' + img[:-7] + ' ' + SVREG_ATLAS + ' ' +
-                  SVREG_FLAGS)
-    ind += 1
-
-# Run CSE
-with closing(Pool(NPROC)) as p:
-    print cmdln1
-    p.map(system, cmdln1)
-    p.terminate()
-
-# Run SVReg
-with closing(Pool(NPROC)) as p:
-    p.map(system, cmdln2)
-    print cmdln2
-    p.terminate()
-
-print("Surface extractions and SVReg done")
+    com += 1
+print str(incom) + ' remaining ' + str(com) + ' done'
