@@ -52,7 +52,7 @@ smooth_' + SMOOTHNESS + 'mm.dfs'
     if isfile(fname):
         continue
 
-    cmdln1.append(THICKNESSPVC_EXE + ' ' + img[:-7] + ' ' + SVREG_ATLAS)
+    cmdln1.append(THICKNESSPVC_EXE + ' ' + img[:-7])
     cmdln2.append(GENERATE_STATS_EXE + ' ' + img[:-7])
     surfname = subpath + '/atlas.left.mid.cortex.svreg.dfs'
     outsurfname = subpath + '/atlas.pvc-thickness_0-6mm.left.\

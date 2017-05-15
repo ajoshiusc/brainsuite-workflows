@@ -38,10 +38,6 @@ ind = 0
 cmdln1 = []
 cmdln2 = []
 for sub in sublist:
-# Check if the workflow has already been run
-    img = sub + '/anat/t1.roiwise.stats.txt'
-    if isfile(img):
-        continue
 
     img = sub + '/anat/t1.nii.gz'
 #    print img
@@ -49,8 +45,16 @@ for sub in sublist:
         continue
 
 # Compose commands for CSE and SVReg
-    cmdln1.append(CSE_EXE + ' ' + img)
-    cmdln2.append(SVREG_EXE + ' ' + img[:-7] + ' ' + SVREG_ATLAS + ' ' +
+
+    imgpial = sub + '/anat/t1.right.pial.cortex.dfs'
+    imgstats = sub + '/anat/t1.roiwise.stats.txt'
+
+   # Check if the workflow has already been run
+    if not isfile(imgpial): 
+        cmdln1.append(CSE_EXE + ' ' + img)
+    
+    if not isfile(imgstats):     
+        cmdln2.append(SVREG_EXE + ' ' + img[:-7] + ' ' + SVREG_ATLAS + ' ' +
                   SVREG_FLAGS)
     ind += 1
 

@@ -7,7 +7,7 @@ Created on Thu Apr 27 12:16:26 2017
 """
 
 import glob
-from os.path import isfile
+from os.path import isfile, split
 import configparser
 
 config_file = u'/big_disk/ajoshi/ABIDE2/study.cfg'
@@ -28,7 +28,7 @@ SVREG_EXE = Config.get('CSESVREG', 'SVREG_EXE')
 
 sublist = lst = glob.glob(STUDY_DIR+'/*')
 
-
+SMOOTHNESS = '6'
 ind = 0
 cmdln1 = []
 cmdln2 = []
@@ -36,10 +36,15 @@ incom = 0
 com = 0
 for sub in sublist:
     img = sub + '/anat/t1.roiwise.stats.txt'
+    subpath, filename = split(img)
+    outsurfname = subpath + '/t1.heat_sol_comp.mat'
+
 #    print img
-    if not isfile(img):
+    if not isfile(outsurfname):
         incom += 1
-        print img
+        print outsurfname
         continue
+
+
     com += 1
 print str(incom) + ' remaining ' + str(com) + ' done'
