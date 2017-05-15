@@ -51,10 +51,10 @@ for sub in sublist:
 
    # Check if the workflow has already been run
     if not isfile(imgpial): 
-        cmdln1.append('qsub -q long.q -l h_vmem=23G ' + CSE_EXE + ' ' + img)
+        cmdln1.append('qsub -q long.q -l h_vmem=23G -cwd ' + CSE_EXE + ' ' + img)
     
     if not isfile(imgstats):     
-        cmdln2.append('qsub -q long.q -l h_vmem=23G ' + SVREG_EXE + ' ' +
+        cmdln2.append('qsub -q long.q -l h_vmem=23G -cwd ' + SVREG_EXE + ' ' +
                       img[:-7] + ' ' + SVREG_ATLAS + ' ' +
                   SVREG_FLAGS)
     ind += 1
