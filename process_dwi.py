@@ -26,7 +26,9 @@ BST_INSTALL = Config.get('CSESVREG', 'BST_INSTALL')
 SVREG_ATLAS = Config.get('CSESVREG', 'SVREG_ATLAS')
 
 BDP_EXE = Config.get('BDP', 'BDP_EXE')
+BDP_FLAGS = Config.get('BDP', 'BDP_FLAGS')
 SVREG_MAP_EXE = Config.get('BDP', 'SVREG_MAP_EXE')
+
 sublist = lst = glob.glob(STUDY_DIR+'/*')
 ind = 0
 cmdln1 = []
@@ -41,7 +43,7 @@ for sub in sublist:
     if not isfile(dwi):
         continue
 
-    cmdln1.append(BDP_EXE + ' ' + t1[:-7] + '.bfc.nii.gz ' + ' --nii ' + dwi + ' --bvec ' + dwi[:-7] + '.bvec' + ' --bval ' +  dwi[:-7] + '.bval ' +  ' --tensors --frt');
+    cmdln1.append(BDP_EXE + ' ' + t1[:-7] + '.bfc.nii.gz ' + ' --nii ' + dwi + ' --bvec ' + dwi[:-7] + '.bvec' + ' --bval ' +  dwi[:-7] + '.bval ' +  ' --tensors --frt ' + BDP_FLAGS);
     print cmdln1
     cmdln2.append(SVREG_MAP_EXE + ' ' + t1[:-7] + '.svreg.inv.map.nii.gz ' + t1[:-7] + '.dwi.RAS.correct.FA.T1_coord.nii.gz ' +  t1[:-7] + '.atlas.FA.nii.gz ' +  SVREG_ATLAS + '.bfc.nii.gz');
     print cmdln2
