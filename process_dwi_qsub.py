@@ -14,7 +14,7 @@ from contextlib import closing
 import ConfigParser
 import sys
 
-config_file =  sys.argv[1]
+config_file = sys.argv[1]
 ''' '/big_disk/ajoshi/coding_ground/\
 brainsuite-workflows/data/sample_data/thickness.cfg'''
 

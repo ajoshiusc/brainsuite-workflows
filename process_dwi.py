@@ -12,9 +12,11 @@ from os.path import isfile
 from multiprocessing import Pool
 from contextlib import closing
 import ConfigParser
+import sys
 
-config_file = '/big_disk/ajoshi/coding_ground/\
-brainsuite-workflows/data/sample_data/thickness.cfg'
+config_file = sys.argv[1]
+'''/big_disk/ajoshi/coding_ground/\
+brainsuite-workflows/data/sample_data/thickness.cfg'''
 
 Config = ConfigParser.ConfigParser()
 Config.read(config_file)
@@ -43,9 +45,13 @@ for sub in sublist:
     if not isfile(dwi):
         continue
 
-    cmdln1.append(BDP_EXE + ' ' + t1[:-7] + '.bfc.nii.gz ' + ' --nii ' + dwi + ' --bvec ' + dwi[:-7] + '.bvec' + ' --bval ' +  dwi[:-7] + '.bval ' +  ' --tensors --frt ' + BDP_FLAGS);
+    cmdln1.append(BDP_EXE + ' ' + t1[:-7] + '.bfc.nii.gz ' + ' --nii ' +
+                  dwi + ' --bvec ' + dwi[:-7] + '.bvec' + ' --bval ' +
+                  dwi[:-7] + '.bval ' + ' --tensors --frt ' + BDP_FLAGS)
     print(cmdln1)
-    cmdln2.append(SVREG_MAP_EXE + ' ' + t1[:-7] + '.svreg.inv.map.nii.gz ' + t1[:-7] + '.dwi.RAS.correct.FA.T1_coord.nii.gz ' +  t1[:-7] + '.atlas.FA.nii.gz ' +  SVREG_ATLAS + '.bfc.nii.gz');
+    cmdln2.append(SVREG_MAP_EXE + ' ' + t1[:-7] + '.svreg.inv.map.nii.gz ' +
+                  t1[:-7] + '.dwi.RAS.correct.FA.T1_coord.nii.gz ' +
+                  t1[:-7] + '.atlas.FA.nii.gz ' + SVREG_ATLAS + '.bfc.nii.gz')
     print(cmdln2)
 
     ind += 1
