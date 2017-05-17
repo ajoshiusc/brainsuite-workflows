@@ -28,6 +28,7 @@ BST_INSTALL = Config.get('CSESVREG', 'BST_INSTALL')
 SVREG_ATLAS = Config.get('CSESVREG', 'SVREG_ATLAS')
 
 BDP_EXE = Config.get('BDP', 'BDP_EXE')
+BDP_FLAGS = Config.get('BDP', 'BDP_FLAGS')
 SVREG_MAP_EXE = Config.get('BDP', 'SVREG_MAP_EXE')
 sublist = lst = glob.glob(STUDY_DIR+'/*')
 ind = 0
@@ -46,7 +47,7 @@ for sub in sublist:
     cmdln1.append('qsub -q long.q -l h_vmem=23G -cwd ' + BDP_EXE + ' ' + 
                   t1[:-7] + '.bfc.nii.gz ' + ' --nii ' + dwi + ' --bvec ' + 
                     dwi[:-7] + '.bvec' + ' --bval ' +  dwi[:-7] + '.bval ' +  
-                    ' --tensors --frt');
+                    ' --tensors --frt '  + BDP_FLAGS);
     print(cmdln1)
     cmdln2.append('qsub -q long.q -l h_vmem=23G -cwd ' + SVREG_MAP_EXE + ' ' + 
                   t1[:-7] + '.svreg.inv.map.nii.gz ' + t1[:-7] + '.dwi.RAS.\

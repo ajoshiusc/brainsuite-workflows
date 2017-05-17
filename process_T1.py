@@ -14,8 +14,7 @@ from contextlib import closing
 import configparser
 import sys
 
-config_file = sys.argv[1]
-# '/big_disk/ajoshi/ABIDE2/study.cfg'
+config_file = '/big_disk/ajoshi/ABIDE2.old/study.cfg'
 
 Config = configparser.ConfigParser()
 Config.read(config_file)
@@ -60,14 +59,14 @@ for sub in sublist:
 
 # Run CSE
 with closing(Pool(NPROC)) as p:
-    print cmdln1
+    print(cmdln1)
     p.map(system, cmdln1)
     p.terminate()
 
 # Run SVReg
 with closing(Pool(NPROC)) as p:
     p.map(system, cmdln2)
-    print cmdln2
+    print(cmdln2)
     p.terminate()
 
 print("Surface extractions and SVReg done")
