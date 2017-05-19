@@ -57,16 +57,21 @@ for sub in sublist:
     if isfile(mask_org):
         copyfile(mask_org, mask)
 
-    cmdln1.append('qsub -q long.q -l h_vmem=23G -cwd ' + BDP_EXE + ' ' +
-                  t1[:-7] + '.bfc.nii.gz ' + ' --nii ' + dwi + ' --bvec ' +
-                  dwi[:-7] + '.bvec' + ' --bval ' + dwi[:-7] + '.bval ' +
-                  ' --tensors --frt ' + BDP_FLAGS)
+    statsfile = sub + '/dwi/t1.BDPSummary.txt'
+    if not isfile(statsfile):
+        cmdln1.append('qsub -q long.q -l h_vmem=23G -cwd ' + BDP_EXE + ' ' +
+                      t1[:-7] + '.bfc.nii.gz ' + ' --nii ' + dwi + ' --bvec ' +
+                      dwi[:-7] + '.bvec' + ' --bval ' + dwi[:-7] + '.bval ' +
+                      ' --tensors --frt ' + BDP_FLAGS)
     print(cmdln1)
-    cmdln2.append('qsub -q long.q -l h_vmem=23G -cwd ' + SVREG_MAP_EXE + ' ' +
-                  t1[:-7] + '.svreg.inv.map.nii.gz ' + t1[:-7] + '.dwi.RAS.\
-correct.FA.T1_coord.nii.gz ' + t1[:-7] + '.atlas.FA.\
-nii.gz ' + SVREG_ATLAS + '.bfc.nii.gz')
-    print(cmdln2)
+
+    warpedfile = t1[:-7] + '.atlas.FA.nii.gz '
+    if not isfile(warpedfile):
+        cmdln2.append('qsub -q long.q -l h_vmem=23G -cwd ' + SVREG_MAP_EXE +
+                      ' ' + t1_org[:-7] + '.svreg.inv.map.nii.gz ' + t1[:-7] +
+                      '.dwi.RAS.FA.T1_coord.nii.gz ' + t1[:-7] +
+                      '.atlas.FA.nii.gz ' + SVREG_ATLAS + '.bfc.nii.gz')
+        print(cmdln2)
 
     ind += 1
 
@@ -79,4 +84,4 @@ with closing(Pool(NPROC)) as p:
     p.map(system, cmdln2)
     p.terminate()
 
-    print("DWI Computations Done")
+    print("DWI Jobs submitted")

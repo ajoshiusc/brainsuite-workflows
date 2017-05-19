@@ -49,14 +49,15 @@ for sub in sublist:
     imgpial = sub + '/anat/t1.right.pial.cortex.dfs'
     imgstats = sub + '/anat/t1.roiwise.stats.txt'
 
-   # Check if the workflow has already been run
-    if not isfile(imgpial): 
-        cmdln1.append('qsub -q long.q -l h_vmem=23G -cwd ' + CSE_EXE + ' ' + img)
-    
-    if not isfile(imgstats):     
+# Check if the workflow has already been run
+    if not isfile(imgpial):
+        cmdln1.append('qsub -q long.q -l h_vmem=23G -cwd ' + CSE_EXE + ' ' +
+                      img)
+
+    if not isfile(imgstats):
         cmdln2.append('qsub -q long.q -l h_vmem=23G -cwd ' + SVREG_EXE + ' ' +
                       img[:-7] + ' ' + SVREG_ATLAS + ' ' +
-                  SVREG_FLAGS)
+                      SVREG_FLAGS)
     ind += 1
 
 # Run CSE
