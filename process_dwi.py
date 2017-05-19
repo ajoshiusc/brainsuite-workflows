@@ -67,11 +67,16 @@ for sub in sublist:
 
     warpedfile = t1[:-7] + '.atlas.FA.nii.gz '
     if not isfile(warpedfile):
-        cmdln2.append(SVREG_MAP_EXE + ' ' + t1_org[:-7] + '.svreg.inv.map.nii.gz\
-' + t1[:-7] + '.dwi.RAS.FA.T1_coord.nii.gz ' + t1[:-7] +
-                        '.atlas.FA.nii.gz ' + SVREG_ATLAS + '.bfc.nii.gz')
-    print cmdln2
-
+        if isfile(t1[:-7] + '.dwi.RAS.correct.FA.T1_coord.nii.gz '):
+			fa_file = t1[:-7] + '.dwi.RAS.correct.FA.T1_coord.nii.gz '
+		elif isfile(t1[:-7] + '.dwi.RAS.FA.T1_coord.nii.gz '):
+			fa_file = t1[:-7] + '.dwi.RAS.FA.T1_coord.nii.gz '
+		else:
+			continue
+    
+		cmdln2.append(SVREG_MAP_EXE + ' ' + t1[:-7] + '.svreg.inv.map.nii.gz ' + fa_file +  t1[:-7] + '.atlas.FA.nii.gz ' +  SVREG_ATLAS + '.bfc.nii.gz');
+    	print cmdln2
+	
     ind += 1
 
 
