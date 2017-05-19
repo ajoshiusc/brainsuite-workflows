@@ -59,8 +59,8 @@ for sub in sublist:
         copyfile(mask_org, mask)
 
     cmdln1.append(BDP_EXE + ' ' + t1[:-7] + '.bfc.nii.gz ' + ' --nii ' + dwi +
-' --bvec ' + dwi[:-7] + '.bvec' + ' --bval ' +  dwi[:-7] + '.bval ' +  ' --\
-tensors --frt ' + BDP_FLAGS)
+                  ' --bvec ' + dwi[:-7] + '.bvec' + ' --bval ' + dwi[:-7] +
+                  '.bval ' + ' --tensors --frt ' + BDP_FLAGS)
     print(cmdln1)
     cmdln2.append(SVREG_MAP_EXE + ' ' + t1[:-7] + '.svreg.inv.map.nii.gz ' +
                   t1[:-7] + '.dwi.RAS.correct.FA.T1_coord.nii.gz ' +

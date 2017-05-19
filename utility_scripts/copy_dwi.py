@@ -4,7 +4,7 @@
 @author: Anand A Joshi, Divya Varadarajan
 """
 import shutil
-#from os.path import isfile
+from os.path import isdir, isfile
 import glob
 import sys
 import ConfigParser
@@ -25,14 +25,30 @@ ind = 0
 for sub in sublist:
     dwi_dir = sub + '/dwi'
     t1_dir = sub + '/anat'
+    if not isdir(t1_dir):
+        continue
 
-    shutil.move(t1_dir + '/*.dwi.*', dwi_dir)
-    shutil.move(t1_dir + '/*.D_coord.*', dwi_dir)
-    shutil.move(t1_dir + '/FRT', dwi_dir)
-    shutil.move(t1_dir + '/*.bst', dwi_dir)
-    shutil.move(t1_dir + '/*.atlas.FA.nii.gz', dwi_dir)
+    for fname in glob.glob(t1_dir + '/*.dwi.*'):
+        shutil.move(fname, dwi_dir)
+
+    for fname in glob.glob(t1_dir + '/*.D_coord.*'):
+        shutil.move(fname, dwi_dir)
+
+    for fname in glob.glob(t1_dir + '/FRT'):
+        shutil.move(fname, dwi_dir)
+
+    for fname in glob.glob(t1_dir + '/*.bst'):
+        shutil.move(fname, dwi_dir)
+
+    for fname in glob.glob(t1_dir + '/*.atlas.FA.nii.gz'):
+        shutil.move(fname, dwi_dir)
+
     shutil.copy(t1_dir + '/t1.bfc.nii.gz', dwi_dir)
     shutil.copy(t1_dir + '/t1.mask.nii.gz', dwi_dir)
+
+    if isfile(t1_dir + '/t1.BDPSummary.txt'):
+        shutil.move(t1_dir + '/t1.BDPSummary.txt', dwi_dir)
+
     ind += 1
 
     print ind
