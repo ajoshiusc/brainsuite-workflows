@@ -19,6 +19,7 @@ for sub in sublist:
 	shutil.move(t1_dir + '/*.D_coord.*', dwi_dir)
 	shutil.move(t1_dir + '/FRT', dwi_dir)
 	shutil.move(t1_dir + '/*.bst', dwi_dir)
+	shutil.move(t1_dir + '/*.atlas.FA.nii.gz', dwi_dir)
 	shutil.copy(t1_dir + '/t1.bfc.nii.gz',dwi_dir)
 	shutil.copy(t1_dir + '/t1.mask.nii.gz',dwi_dir)
 	ind += 1
