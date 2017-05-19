@@ -13,7 +13,7 @@ from multiprocessing import Pool
 from contextlib import closing
 import ConfigParser
 import sys
-import shutil import copyfile
+from shutil import copyfile
 
 config_file = sys.argv[1]
 '''/big_disk/ajoshi/coding_ground/\
@@ -39,28 +39,32 @@ cmdln2 = []
 
 for sub in sublist:
     t1_org = sub + '/anat/t1.nii.gz'
-	t1 = sub + '/dwi/t1.nii.gz'
-	mask_org = sub + '/anat/t1.mask.nii.gz'
-	mask = sub + '/dwi/t1.mask.nii.gz'
-	bfc_org = sub + '/anat/t1.bfc.nii.gz'
-	bfc = sub + '/dwi/t1.bfc.nii.gz'
-	dwi = sub + '/dwi/dwi.nii.gz'
-	
+    t1 = sub + '/dwi/t1.nii.gz'
+    mask_org = sub + '/anat/t1.mask.nii.gz'
+    mask = sub + '/dwi/t1.mask.nii.gz'
+    bfc_org = sub + '/anat/t1.bfc.nii.gz'
+    bfc = sub + '/dwi/t1.bfc.nii.gz'
+    dwi = sub + '/dwi/dwi.nii.gz'
+
     if not isfile(t1_org):
         continue
     if not isfile(dwi):
         continue
-	if not isfile(bfc_org):
-		continue
-		
-	copyfile(t1_org, t1);
-	copyfile(bfc_org, bfc);
-	if isfile(mask_org)
-		copyfile(mask_org, mask);
-		
-    cmdln1.append(BDP_EXE + ' ' + t1[:-7] + '.bfc.nii.gz ' + ' --nii ' + dwi + ' --bvec ' + dwi[:-7] + '.bvec' + ' --bval ' +  dwi[:-7] + '.bval ' +  ' --tensors --frt ' + BDP_FLAGS);
-    print cmdln1
-    cmdln2.append(SVREG_MAP_EXE + ' ' + t1[:-7] + '.svreg.inv.map.nii.gz ' + t1[:-7] + '.dwi.RAS.correct.FA.T1_coord.nii.gz ' +  t1[:-7] + '.atlas.FA.nii.gz ' +  SVREG_ATLAS + '.bfc.nii.gz');
+    if not isfile(bfc_org):
+        continue
+
+    copyfile(t1_org, t1)
+    copyfile(bfc_org, bfc)
+    if isfile(mask_org):
+        copyfile(mask_org, mask)
+
+    cmdln1.append(BDP_EXE + ' ' + t1[:-7] + '.bfc.nii.gz ' + ' --nii ' + dwi +
+' --bvec ' + dwi[:-7] + '.bvec' + ' --bval ' +  dwi[:-7] + '.bval ' +  ' --\
+tensors --frt ' + BDP_FLAGS)
+    print(cmdln1)
+    cmdln2.append(SVREG_MAP_EXE + ' ' + t1[:-7] + '.svreg.inv.map.nii.gz ' +
+                  t1[:-7] + '.dwi.RAS.correct.FA.T1_coord.nii.gz ' +
+                  t1[:-7] + '.atlas.FA.nii.gz ' + SVREG_ATLAS + '.bfc.nii.gz')
     print cmdln2
 
     ind += 1

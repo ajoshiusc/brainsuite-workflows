@@ -13,6 +13,7 @@ from multiprocessing import Pool
 from contextlib import closing
 import ConfigParser
 import sys
+from shutil import copyfile
 
 config_file = sys.argv[1]
 ''' '/big_disk/ajoshi/coding_ground/\
@@ -36,23 +37,35 @@ cmdln1 = []
 cmdln2 = []
 
 for sub in sublist:
-    t1 = sub + '/anat/t1.nii.gz'
+    t1_org = sub + '/anat/t1.nii.gz'
+    t1 = sub + '/dwi/t1.nii.gz'
+    mask_org = sub + '/anat/t1.mask.nii.gz'
+    mask = sub + '/dwi/t1.mask.nii.gz'
+    bfc_org = sub + '/anat/t1.bfc.nii.gz'
+    bfc = sub + '/dwi/t1.bfc.nii.gz'
     dwi = sub + '/dwi/dwi.nii.gz'
 
-    if not isfile(t1):
+    if not isfile(t1_org):
         continue
     if not isfile(dwi):
         continue
+    if not isfile(bfc_org):
+        continue
 
-    cmdln1.append('qsub -q long.q -l h_vmem=23G -cwd ' + BDP_EXE + ' ' + 
-                  t1[:-7] + '.bfc.nii.gz ' + ' --nii ' + dwi + ' --bvec ' + 
-                    dwi[:-7] + '.bvec' + ' --bval ' +  dwi[:-7] + '.bval ' +  
-                    ' --tensors --frt '  + BDP_FLAGS);
+    copyfile(t1_org, t1)
+    copyfile(bfc_org, bfc)
+    if isfile(mask_org):
+        copyfile(mask_org, mask)
+
+    cmdln1.append('qsub -q long.q -l h_vmem=23G -cwd ' + BDP_EXE + ' ' +
+                  t1[:-7] + '.bfc.nii.gz ' + ' --nii ' + dwi + ' --bvec ' +
+                  dwi[:-7] + '.bvec' + ' --bval ' + dwi[:-7] + '.bval ' +
+                  ' --tensors --frt ' + BDP_FLAGS)
     print(cmdln1)
-    cmdln2.append('qsub -q long.q -l h_vmem=23G -cwd ' + SVREG_MAP_EXE + ' ' + 
+    cmdln2.append('qsub -q long.q -l h_vmem=23G -cwd ' + SVREG_MAP_EXE + ' ' +
                   t1[:-7] + '.svreg.inv.map.nii.gz ' + t1[:-7] + '.dwi.RAS.\
-correct.FA.T1_coord.nii.gz ' +  t1[:-7] + '.atlas.FA.\
-nii.gz ' +  SVREG_ATLAS + '.bfc.nii.gz');
+correct.FA.T1_coord.nii.gz ' + t1[:-7] + '.atlas.FA.\
+nii.gz ' + SVREG_ATLAS + '.bfc.nii.gz')
     print(cmdln2)
 
     ind += 1
